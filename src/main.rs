@@ -3,7 +3,7 @@
 const Pi: f32 = 3.14159265359;
 
 trait Shapes {
-    fn init(&mut self ,r: f32, p: (i32,i32));
+    fn init(&mut self ,r: f32, p: (i32,i32), i: i32);
     fn get(&mut self);
     fn get_perimeter(&self) -> f32;
 }
@@ -11,13 +11,15 @@ trait Shapes {
 struct Circle {
     radius: f32,
     position: (i32,i32),
+    id: i32,
 }
 
 impl Shapes for Circle {
 
-    fn init(&mut self ,r: f32, p: (i32,i32) ) {
+    fn init(&mut self ,r: f32, p: (i32,i32), i: i32) {
             self.radius = r;
             self.position = p;
+            self.id = i;
     }
 
 
@@ -55,7 +57,8 @@ impl<'a> System {
 
         let local_c = Circle {
             radius: r,
-            position:(p)
+            position:(p),
+            id: self.id,
         };
         self.system_push(Box::new(local_c));
         return self.id-1;
@@ -71,8 +74,7 @@ impl<'a> System {
 fn main() {
 
 let mut Central = System::init();
-let mut Object = Circle{radius:5.0,position:(250,100)};
-Central.system_push(Box::new(Object));
+Central.init_circle(5.0,(100,100));
 Central.init_circle(10.0,(100,100));
 
 
